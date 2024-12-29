@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "sistema_de_provas"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "sistema_de_provas-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
