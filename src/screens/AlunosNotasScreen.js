@@ -5,14 +5,15 @@ import "../css/AlunosNotasScreen.css";
 
 const AlunosNotasScreen = () => {
   const [alunos, setAlunos] = useState([]);
-  const [cursos, setCursos] = useState([]);
+  const [cursoMap, setCursoMap] = useState(new Map());
   const [provas, setProvas] = useState([]);
   const [filtroCurso, setFiltroCurso] = useState("");
   const [filtroProva, setFiltroProva] = useState("");
 
   useEffect(() => {
-    const fetchAlunos = async () => {
+    const fetchDados = async () => {
       try {
+        // Buscar resultados dos alunos
         const querySnapshot = await getDocs(collection(db, "resultados"));
         const alunosList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -20,24 +21,27 @@ const AlunosNotasScreen = () => {
         }));
         setAlunos(alunosList);
 
-        // Extrair cursos e provas únicos
-        const cursosUnicos = [
-          ...new Set(alunosList.map((aluno) => aluno.curso)),
-        ];
+        // Buscar cursos diretamente da tabela de cursos
+        const queryCursos = await getDocs(collection(db, "cursos"));
+        const cursosMap = new Map();
+        queryCursos.docs.forEach((doc) => {
+          cursosMap.set(doc.id, doc.data().nome);
+        });
+        setCursoMap(cursosMap);
+
+        // Extrair provas únicas
         const provasUnicas = [
           ...new Set(alunosList.map((aluno) => aluno.prova)),
         ];
-        setCursos(cursosUnicos);
         setProvas(provasUnicas);
       } catch (error) {
-        console.error("Erro ao buscar dados dos alunos:", error);
+        console.error("Erro ao buscar dados:", error);
       }
     };
 
-    fetchAlunos();
+    fetchDados();
   }, []);
 
-  // Filtrar os alunos com base nos filtros selecionados
   const alunosFiltrados = alunos.filter((aluno) => {
     return (
       (filtroCurso === "" || aluno.curso === filtroCurso) &&
@@ -70,9 +74,9 @@ const AlunosNotasScreen = () => {
             onChange={(e) => setFiltroCurso(e.target.value)}
           >
             <option value="">Todos</option>
-            {cursos.map((curso, index) => (
-              <option key={index} value={curso}>
-                {curso}
+            {Array.from(cursoMap.entries()).map(([id, nome]) => (
+              <option key={id} value={id}>
+                {nome}
               </option>
             ))}
           </select>
@@ -91,21 +95,18 @@ const AlunosNotasScreen = () => {
               </option>
             ))}
           </select>
-    
         </label>
-        <label>
-                     {/* Botão para limpar filtros */}
-      <button
-        onClick={() => {
-          setFiltroCurso('');
-          setFiltroProva('');
-        }}
-        className="clear-filters"
-      >
-        Limpar Filtros
-      </button>
-        </label>
-      
+
+        {/* Botão para limpar filtros */}
+        <button
+          onClick={() => {
+            setFiltroCurso("");
+            setFiltroProva("");
+          }}
+          className="clear-filters"
+        >
+          Limpar Filtros
+        </button>
       </div>
 
       {/* Tabela de resultados */}
@@ -127,7 +128,7 @@ const AlunosNotasScreen = () => {
             {alunosFiltrados.map((aluno) => (
               <tr key={aluno.id}>
                 <td>{aluno.aluno}</td>
-                <td>{aluno.curso}</td>
+                <td>{cursoMap.get(aluno.curso) || "Desconhecido"}</td>
                 <td>{aluno.prova}</td>
                 <td>{aluno.nota}</td>
                 <td>
