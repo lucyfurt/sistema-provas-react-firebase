@@ -1,0 +1,27 @@
+.cadastrar-curso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.curso-input {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.curso-button {
+  padding: 10px 20px;
+  background-color: #329c5b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.curso-button:hover {
+  background-color: #267a44;
+}

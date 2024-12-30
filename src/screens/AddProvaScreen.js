@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import '../css/AddProvaScreen.css';
 
 const AddProvaScreen = () => {
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [disciplina, setDisciplina] = useState('');
+  const [cursoSelecionado, setCursoSelecionado] = useState('');
+  const [cursos, setCursos] = useState([]);
   const [questoes, setQuestoes] = useState([{ id: Date.now(), pergunta: '', opcoes: ['', '', '', ''], correta: '' }]);
 
-  // Adiciona uma nova questão
+  useEffect(() => {
+    const fetchCursos = async () => {
+      try {
+        const cursosSnapshot = await getDocs(collection(db, 'cursos'));
+        const cursosList = cursosSnapshot.docs.map(doc => ({
+          id: doc.id,
+          nome: doc.data().nome,
+        }));
+        setCursos(cursosList);
+      } catch (error) {
+        console.error('Erro ao carregar cursos:', error);
+        alert('Erro ao carregar os cursos.');
+      }
+    };
+
+    fetchCursos();
+  }, []);
+
   const handleAddQuestao = () => {
     setQuestoes([
       ...questoes,
@@ -17,7 +36,6 @@ const AddProvaScreen = () => {
     ]);
   };
 
-  // Atualiza campos específicos de uma questão
   const handleQuestaoChange = (id, field, value) => {
     setQuestoes(questoes.map((questao) => {
       if (questao.id === id) {
@@ -35,11 +53,11 @@ const AddProvaScreen = () => {
     }));
   };
 
-  // Valida o formulário antes de salvar
   const validarFormulario = () => {
     if (!titulo.trim()) return 'O título da prova é obrigatório.';
     if (!descricao.trim()) return 'A descrição da prova é obrigatória.';
     if (!disciplina.trim()) return 'A disciplina da prova é obrigatória.';
+    if (!cursoSelecionado.trim()) return 'Por favor, selecione um curso.';
 
     for (const [index, questao] of questoes.entries()) {
       if (!questao.pergunta.trim()) return `A pergunta ${index + 1} está em branco.`;
@@ -51,7 +69,6 @@ const AddProvaScreen = () => {
     return null;
   };
 
-  // Envia o formulário para o Firestore
   const handleSubmit = async (e) => {
     e.preventDefault();
     const erro = validarFormulario();
@@ -65,6 +82,7 @@ const AddProvaScreen = () => {
         titulo,
         descricao,
         disciplina,
+        curso: cursoSelecionado,
         questoes,
         timestamp: new Date(),
       });
@@ -72,6 +90,7 @@ const AddProvaScreen = () => {
       setTitulo('');
       setDescricao('');
       setDisciplina('');
+      setCursoSelecionado('');
       setQuestoes([{ id: Date.now(), pergunta: '', opcoes: ['', '', '', ''], correta: '' }]);
     } catch (error) {
       console.error('Erro ao adicionar a prova:', error);
@@ -108,6 +127,20 @@ const AddProvaScreen = () => {
             onChange={(e) => setDisciplina(e.target.value)}
             placeholder="Digite a disciplina"
           />
+        </div>
+        <div className="form-group">
+          <label>Curso</label>
+          <select
+            value={cursoSelecionado}
+            onChange={(e) => setCursoSelecionado(e.target.value)}
+          >
+            <option value="">Selecione um curso</option>
+            {cursos.map((curso) => (
+              <option key={curso.id} value={curso.nome}>
+                {curso.nome}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="questoes-container">
           {questoes.map((questao, index) => (

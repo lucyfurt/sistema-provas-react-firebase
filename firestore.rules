@@ -2,7 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /provas/{document} {
-      allow read, write: if true; // Apenas para testes
+      allow read, write: if true; 
+    }
+     match /resultados/{document} {
+      allow read, write: if true; 
+    }
+       match /cursos/{document} {
+      allow read, write: if true; 
     }
   }
 }
