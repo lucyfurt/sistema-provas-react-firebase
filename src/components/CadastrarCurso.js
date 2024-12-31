@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import "../css/CadastrarCurso.css";
 
 const CadastrarCurso = () => {
@@ -58,10 +64,10 @@ const CadastrarCurso = () => {
   }, []);
 
   return (
-    <div class="container overflow-hidden text-center">
-      <div class="row gx-5">
-        <div class="col">
-          <div class="p-3">
+    <div className="container overflow-hidden text-center">
+      <div className="row gx-5">
+        <div className="col">
+          <div className="p-3">
             <h2>Cadastrar Curso</h2>
             <input
               type="text"
@@ -75,22 +81,32 @@ const CadastrarCurso = () => {
             </button>
           </div>
         </div>
-        <div class="col">
-          <div class="p-3">
+        <div className="col">
+          <div className="p-3">
             <h3>Cursos Cadastrados</h3>
-            <ul className="curso-lista">
-              {cursos.map((curso) => (
-                <li key={curso.id} className="curso-item">
-                  {curso.nome}
-                  <button
-                    onClick={() => handleDeletarCurso(curso.id)}
-                    className="deletar-button"
-                  >
-                    Deletar
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Nome do Curso</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cursos.map((curso) => (
+                  <tr key={curso.id}>
+                    <td>{curso.nome}</td>
+                    <td>
+                      <button
+                        onClick={() => handleDeletarCurso(curso.id)}
+                        className="btn btn-danger btn-sm"
+                      >
+                        Deletar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
