@@ -1,41 +1,99 @@
-import React, { useState } from 'react';
-import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import '../css/CadastrarCurso.css';
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import "../css/CadastrarCurso.css";
 
 const CadastrarCurso = () => {
-  const [nomeCurso, setNomeCurso] = useState('');
+  const [nomeCurso, setNomeCurso] = useState("");
+  const [cursos, setCursos] = useState([]);
 
-  const handleCadastrarCurso = async () => {
-    if (!nomeCurso.trim()) {
-      alert('Por favor, insira o nome do curso.');
-      return;
-    }
+  // Função para buscar os cursos cadastrados no Firestore
+  const fetchCursos = async () => {
     try {
-      await addDoc(collection(db, 'cursos'), {
-        nome: nomeCurso.trim(),
-      });
-      alert('Curso cadastrado com sucesso!');
-      setNomeCurso('');
+      const cursosSnapshot = await getDocs(collection(db, "cursos"));
+      const cursosList = cursosSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCursos(cursosList);
     } catch (error) {
-      console.error('Erro ao cadastrar curso:', error);
-      alert('Erro ao cadastrar curso.');
+      console.error("Erro ao buscar cursos:", error);
     }
   };
 
+  // Função para cadastrar um novo curso
+  const handleCadastrarCurso = async () => {
+    if (!nomeCurso.trim()) {
+      alert("Por favor, insira o nome do curso.");
+      return;
+    }
+    try {
+      await addDoc(collection(db, "cursos"), {
+        nome: nomeCurso.trim(),
+      });
+      alert("Curso cadastrado com sucesso!");
+      setNomeCurso("");
+      fetchCursos(); // Atualiza a lista de cursos após cadastrar
+    } catch (error) {
+      console.error("Erro ao cadastrar curso:", error);
+      alert("Erro ao cadastrar curso.");
+    }
+  };
+
+  // Função para deletar um curso
+  const handleDeletarCurso = async (id) => {
+    try {
+      await deleteDoc(doc(db, "cursos", id));
+      alert("Curso deletado com sucesso!");
+      fetchCursos(); // Atualiza a lista de cursos após deletar
+    } catch (error) {
+      console.error("Erro ao deletar curso:", error);
+      alert("Erro ao deletar curso.");
+    }
+  };
+
+  // UseEffect para buscar cursos ao carregar o componente
+  useEffect(() => {
+    fetchCursos();
+  }, []);
+
   return (
-    <div className="cadastrar-curso">
-      <h2>Cadastrar Curso</h2>
-      <input
-        type="text"
-        placeholder="Nome do Curso"
-        value={nomeCurso}
-        onChange={(e) => setNomeCurso(e.target.value)}
-        className="curso-input"
-      />
-      <button onClick={handleCadastrarCurso} className="curso-button">
-        Cadastrar Curso
-      </button>
+    <div class="container overflow-hidden text-center">
+      <div class="row gx-5">
+        <div class="col">
+          <div class="p-3">
+            <h2>Cadastrar Curso</h2>
+            <input
+              type="text"
+              placeholder="Nome do Curso"
+              value={nomeCurso}
+              onChange={(e) => setNomeCurso(e.target.value)}
+              className="curso-input"
+            />
+            <button onClick={handleCadastrarCurso} className="curso-button">
+              Cadastrar Curso
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="p-3">
+            <h3>Cursos Cadastrados</h3>
+            <ul className="curso-lista">
+              {cursos.map((curso) => (
+                <li key={curso.id} className="curso-item">
+                  {curso.nome}
+                  <button
+                    onClick={() => handleDeletarCurso(curso.id)}
+                    className="deletar-button"
+                  >
+                    Deletar
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

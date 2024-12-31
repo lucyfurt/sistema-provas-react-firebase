@@ -25,3 +25,30 @@
 .curso-button:hover {
   background-color: #267a44;
 }
+
+.curso-lista {
+  list-style-type: none;
+  padding: 0;
+}
+
+.curso-item {
+  background-color: #f9f9f9;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.deletar-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deletar-button:hover {
+  background-color: darkred;
+}
