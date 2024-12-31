@@ -55,25 +55,44 @@ function App() {
   // Função chamada ao finalizar a prova
   const handleProvaFinalizada = async (respostas) => {
     console.log("Prova finalizada com as respostas:", respostas);
+    
+    // Cálculo da nota
     const pontos = calculaNota(provaSelecionada.questoes, respostas);
     setNota(pontos);
     setRespostas(respostas);
-
-    // Salvar as respostas no Firestore
+  
+    // Verificar se o usuário já realizou a prova
     try {
-      await addDoc(collection(db, 'resultados'), {
+      const resultadosRef = collection(db, 'resultados');
+      const querySnapshot = await getDocs(resultadosRef);
+      const resultados = querySnapshot.docs.map((doc) => doc.data());
+  
+      const jaRealizou = resultados.some(
+        (resultado) => 
+          resultado.email === user.email 
+      );
+  
+      if (jaRealizou) {
+        alert("Você já realizou essa prova!");
+        return;
+      }
+  
+      // Salvar as respostas no Firestore
+      await addDoc(resultadosRef, {
         aluno: aluno.nome,
         curso: aluno.curso,
         prova: nomeProvaSelecionada,
+        email: user.email, // Salva o e-mail do usuário
         respostas,
         nota: pontos,
         timestamp: new Date(),
       });
       console.log("Respostas armazenadas com sucesso!");
     } catch (error) {
-      console.error("Erro ao armazenar respostas:", error);
+      console.error("Erro ao armazenar respostas ou verificar a prova:", error);
     }
   };
+  
 
   // Alternância de provas pelo menu de seleção
   const selecionarProva = (prova) => {
