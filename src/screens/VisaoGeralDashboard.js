@@ -40,7 +40,7 @@ const VisaoGeralDashboard = () => {
           <p>{totalProvas}</p>
         </div>
         <div className="card">
-          <h3>Total de Cursos</h3>
+          <h3>Total de Notas</h3>
           <p>{totalCursos}</p>
         </div>
     

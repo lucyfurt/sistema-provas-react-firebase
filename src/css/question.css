@@ -69,3 +69,7 @@ h2 {
 .finish-button:hover {
   background-color: #0077b6;
 }
+
+body, .question-screen, .question, .option {
+  user-select: none;
+}
