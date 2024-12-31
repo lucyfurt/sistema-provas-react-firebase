@@ -1,22 +1,3 @@
-
-.welcome-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #90e0ef;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-h2 {
-  font-size: 2em;
-  color: #0a0909;
-  margin-bottom: 20px;
-}
-
 .input-field {
   width: 80%;
   max-width: 300px;
@@ -43,10 +24,44 @@ h2 {
   background-color: #0077b6;
 }
 
-p{
-  font-size: 1em;
-  color: #0c0909;
-  margin-bottom: 20px;
-  line-height: 0.1;
-  font-weight: bold;
+.card-body p {
+  font-size: 18px !important;
+  text-align: justify;
+  line-height: 2rem;
+  margin: 0;
+  padding: 0;
 }
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  width: 100% !important;
+}
+
+h1{
+  width: 100% !important;
+  font-size: 2em !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h2{
+  
+  font-size: 1em !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.input-field{
+  padding: 10px;
+margin:15px;  
+  text-align: center;
+border: none;
+}
+
+
+

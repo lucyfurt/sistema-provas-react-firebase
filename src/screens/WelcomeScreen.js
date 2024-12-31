@@ -34,53 +34,67 @@ const WelcomeScreen = ({ setAluno }) => {
   };
 
   return (
-    <div className="welcome-container">
-      <h2>Sistema de Provas Online</h2>
-      <input
-        type="text"
-        placeholder="Digite nome completo"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-        className="input-field"
-      />
-      <select
-        value={curso}
-        onChange={(e) => setCurso(e.target.value)}
-        className="input-field"
-      >
-        <option value="">Selecione um curso</option>
-        {cursos.map((curso) => (
-          <option key={curso.id} value={curso.id}>
-            {curso.nome}
-          </option>
-        ))}
-      </select>
-      <button onClick={iniciarProva} className="start-button">
-        Iniciar Prova
-      </button>
-      <h3>Observações:</h3>
-      <p>
-        A prova terá apenas uma tentativa. Após iniciá-la, não será possível
-        reiniciá-la ou fazer correções após o envio.
-      </p>
-      <p>
-        Não saia da tela da prova. O sistema monitorará a navegação, e ao sair
-        da tela, o acesso à prova será bloqueado automaticamente.
-      </p>
-      <p>
-        Não é permitido consultar materiais impressos, digitais ou quaisquer
-        outros recursos de apoio durante a realização da prova.
-      </p>
-      <p>
-        O uso de celulares, relógios inteligentes ou quaisquer outros
-        dispositivos eletrônicos é estritamente proibido durante a realização da
-        prova.
-      </p>
-      <p>
-        Em caso de problemas técnicos, o aluno deve informar imediatamente à
-        professora, apresentando evidências (como capturas de tela ou mensagens
-        de erro).
-      </p>
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card">
+            <div class="card-body">
+              <h3>Observações:</h3>
+              <p>
+                ✅ A prova deve ser feita individualmente, sem ajuda de
+                terceiros.
+              </p>
+              <p>
+                ✅ A prova terá apenas uma tentativa. Após iniciá-la, não será
+                possível reiniciá-la ou fazer correções após o envio.
+              </p>
+              <p>
+                ✅ Não saia da tela da prova. O sistema monitorará a navegação,
+                e ao sair da tela, o acesso à prova será bloqueado
+                automaticamente.
+              </p>
+              <p>
+                ✅ Não é permitido consultar materiais impressos, digitais, uso
+                de celulares ou quaisquer outros recursos de apoio durante a
+                realização da prova.
+              </p>
+              <p>
+                ✅ Em caso de problemas técnicos, o aluno deve informar
+                imediatamente à professora responsável pela disciplina.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+        <div className="input-field">
+          <h1>Bem-vindo ao Sistema de Provas Online!</h1>
+          <h2>Para iniciar a prova, preencha os campos abaixo:</h2>
+          
+            <input
+              type="text"
+              placeholder="Digite nome completo"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              className="input-field"
+            />
+            <select
+              value={curso}
+              onChange={(e) => setCurso(e.target.value)}
+              className="input-field"
+            >
+              <option value="">Selecione um curso</option>
+              {cursos.map((curso) => (
+                <option key={curso.id} value={curso.id}>
+                  {curso.nome}
+                </option>
+              ))}
+            </select>
+            <button onClick={iniciarProva} className="start-button">
+              Iniciar Prova
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
