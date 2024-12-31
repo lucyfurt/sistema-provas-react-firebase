@@ -13,7 +13,7 @@
 
 h2 {
   font-size: 2em;
-  color: #333;
+  color: #0a0909;
   margin-bottom: 20px;
 }
 
@@ -41,4 +41,12 @@ h2 {
 
 .start-button:hover {
   background-color: #0077b6;
+}
+
+p{
+  font-size: 1em;
+  color: #0c0909;
+  margin-bottom: 20px;
+  line-height: 0.1;
+  font-weight: bold;
 }
