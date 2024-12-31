@@ -1,0 +1,20 @@
+.prova-realizada {
+  display: inline;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;    /* Centraliza verticalmente */
+  text-align: center;     /* Centraliza o texto dentro do container */
+  height: 100vh;          /* Altura da tela inteira */
+  background-color: #f9f9f9; /* Cor de fundo suave */
+  font-family: Arial, sans-serif; /* Fonte padrão */
+  color: #0e0c0c;            /* Cor do texto */
+}
+
+.prova-realizada h2 {
+  font-size: 2rem;         /* Tamanho do título */
+  margin-bottom: 1rem;     /* Espaçamento abaixo do título */
+}
+
+.prova-realizada p {
+  font-size: 1.2rem;       /* Tamanho do parágrafo */
+  color: #555;             /* Cor do parágrafo */
+}

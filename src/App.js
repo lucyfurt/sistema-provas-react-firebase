@@ -7,6 +7,7 @@ import QuestionScreen from './screens/QuestionScreen';
 import FinishScreen from './screens/FinishScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import ProvasDisponiveis from './screens/ProvasDisponiveis';
+import ProvaRealizadaScreen from './screens/ProvaRealizadaScreen';
 
 // Importa função para cálculo da nota
 import calculaNota from './utils/calculaNota';
@@ -52,44 +53,61 @@ function App() {
     fetchProvas();
   }, []);
 
+  useEffect(() => {
+    const verificarProvasRealizadas = async () => {
+      if (user) {
+        try {
+          const provasRealizadasSnapshot = await getDocs(collection(db, 'provas_realizadas'));
+          const provasRealizadas = provasRealizadasSnapshot.docs
+            .map((doc) => doc.data())
+            .filter((prova) => prova.email === user.email);
+  
+          const jaRealizouProva = provasRealizadas.some(
+            (prova) => prova.prova === nomeProvaSelecionada
+          );
+  
+          if (jaRealizouProva) {
+            setRespostas(["ALREADY_DONE"]); // Indicativo de que já realizou
+          }
+        } catch (error) {
+          console.error("Erro ao verificar provas realizadas:", error);
+        }
+      }
+    };
+  
+    verificarProvasRealizadas();
+  }, [user, nomeProvaSelecionada]);
+
+  
   // Função chamada ao finalizar a prova
   const handleProvaFinalizada = async (respostas) => {
     console.log("Prova finalizada com as respostas:", respostas);
     
-    // Cálculo da nota
     const pontos = calculaNota(provaSelecionada.questoes, respostas);
     setNota(pontos);
     setRespostas(respostas);
   
-    // Verificar se o usuário já realizou a prova
     try {
-      const resultadosRef = collection(db, 'resultados');
-      const querySnapshot = await getDocs(resultadosRef);
-      const resultados = querySnapshot.docs.map((doc) => doc.data());
-  
-      const jaRealizou = resultados.some(
-        (resultado) => 
-          resultado.email === user.email 
-      );
-  
-      if (jaRealizou) {
-        alert("Você já realizou essa prova!");
-        return;
-      }
-  
-      // Salvar as respostas no Firestore
-      await addDoc(resultadosRef, {
+      // Salvar o resultado no Firestore
+      await addDoc(collection(db, 'resultados'), {
         aluno: aluno.nome,
         curso: aluno.curso,
         prova: nomeProvaSelecionada,
-        email: user.email, // Salva o e-mail do usuário
+        email: user.email,
         respostas,
         nota: pontos,
         timestamp: new Date(),
       });
-      console.log("Respostas armazenadas com sucesso!");
+  
+      // Marcar a prova como realizada
+      await addDoc(collection(db, 'provas_realizadas'), {
+        email: user.email,
+        prova: nomeProvaSelecionada,
+      });
+  
+      console.log("Prova finalizada e marcada como realizada!");
     } catch (error) {
-      console.error("Erro ao armazenar respostas ou verificar a prova:", error);
+      console.error("Erro ao finalizar a prova:", error);
     }
   };
   
@@ -117,9 +135,23 @@ function App() {
     );
   }
 
-  return (
-    <FinishScreen />
-  );
+  if (!user) return <LoginScreen />;
+  if (isProfessor) return <DashboardScreen />;
+  if (!aluno.nome) return <WelcomeScreen setAluno={setAluno} />;
+  if (!provaSelecionada) return <ProvasDisponiveis provas={provas} selecionarProva={selecionarProva} />;
+  if (respostas.length === 0) {
+    return (
+      <QuestionScreen 
+        questoes={provaSelecionada.questoes} 
+        tempoMaximo={1800}  
+        onProvaFinalizada={handleProvaFinalizada} 
+      />
+    );
+  }
+  if (respostas[0] === "ALREADY_DONE") return <ProvaRealizadaScreen />;
+  
+  return <FinishScreen />;
+  
 }
 
 export default App;
