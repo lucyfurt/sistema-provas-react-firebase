@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import '../css/AlunosNotasScreen.css';
 
 const ProvasDashboard = () => {
@@ -23,6 +23,7 @@ const ProvasDashboard = () => {
     fetchProvas();
   }, []);
 
+  // Deletar prova
   const handleDeleteProva = async (id) => {
     const confirmDelete = window.confirm('Tem certeza que deseja deletar esta prova?');
     if (!confirmDelete) return;
@@ -34,6 +35,23 @@ const ProvasDashboard = () => {
     } catch (error) {
       console.error('Erro ao deletar a prova:', error);
       alert('Erro ao deletar a prova. Tente novamente.');
+    }
+  };
+
+  // Ativar/Desativar prova
+  const handleToggleStatus = async (id, statusAtual) => {
+    try {
+      const provaRef = doc(db, 'provas', id);
+      await updateDoc(provaRef, { ativa: !statusAtual });
+
+      setProvas((prevProvas) =>
+        prevProvas.map((prova) =>
+          prova.id === id ? { ...prova, ativa: !statusAtual } : prova
+        )
+      );
+    } catch (error) {
+      console.error('Erro ao atualizar status da prova:', error);
+      alert('Erro ao atualizar status.');
     }
   };
 
@@ -50,6 +68,7 @@ const ProvasDashboard = () => {
               <th>Disciplina</th>
               <th>Descrição</th>
               <th>Data</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -59,8 +78,21 @@ const ProvasDashboard = () => {
                 <td>{prova.titulo}</td>
                 <td>{prova.disciplina}</td>
                 <td>{prova.descricao}</td>
-                <td>{new Date(prova.timestamp.seconds * 1000).toLocaleString()}</td>
                 <td>
+                  {prova.timestamp
+                    ? new Date(prova.timestamp.seconds * 1000).toLocaleString()
+                    : "Sem data"}
+                </td>
+                <td className={prova.ativa ? "status-ativa" : "status-inativa"}>
+                  {prova.ativa ? "Ativa" : "Inativa"}
+                </td>
+                <td>
+                  <button
+                    onClick={() => handleToggleStatus(prova.id, prova.ativa)}
+                    className="toggle-status-button"
+                  >
+                    {prova.ativa ? "Desativar" : "Ativar"}
+                  </button>
                   <button
                     onClick={() => handleDeleteProva(prova.id)}
                     className="delete-button"

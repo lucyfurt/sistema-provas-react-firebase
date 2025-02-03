@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs} from "firebase/firestore";
 import "../css/ProvasDisponiveis.css";
 
 const ProvasDisponiveis = ({ selecionarProva }) => {
@@ -28,15 +28,16 @@ const ProvasDisponiveis = ({ selecionarProva }) => {
     fetchCursos();
   }, []);
 
+  // Filtra provas pelo curso selecionado
   const provasFiltradas = filtroCurso
     ? provas.filter((prova) => prova.curso === filtroCurso)
     : provas;
 
   return (
-    <div class="container px-4 text-center">
-      <div class="row gx-5">
-        <div class="col">
-          <div class="p-3">
+    <div className="container px-4 text-center">
+      <div className="row gx-5">
+        <div className="col">
+          <div className="p-3">
             <h2>Provas Disponíveis</h2>
             <select
               value={filtroCurso}
@@ -52,16 +53,24 @@ const ProvasDisponiveis = ({ selecionarProva }) => {
             </select>
           </div>
         </div>
-        <div class="col">
-          <div class="p-3">
+        <div className="col">
+          <div className="p-3">
             {provasFiltradas.map((prova) => (
-              <button
-                key={prova.id}
-                onClick={() => selecionarProva(prova)}
-                className="prova-button"
-              >
-                {prova.titulo} ({prova.curso})
-              </button>
+              <div key={prova.id} className="prova-item">
+                <button
+                  onClick={() => selecionarProva(prova)}
+                  className="prova-button"
+                  disabled={!prova.ativa} 
+                >
+                  {prova.titulo} ({prova.curso})
+                </button>
+                <span
+                  className={`status ${prova.ativa ? "ativa" : "inativa"}`}
+                >
+                  {prova.ativa ? "Ativa" : "Inativa"}
+                </span>
+                
+              </div>
             ))}
           </div>
         </div>

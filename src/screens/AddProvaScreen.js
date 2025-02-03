@@ -8,6 +8,7 @@ const AddProvaScreen = () => {
   const [descricao, setDescricao] = useState('');
   const [disciplina, setDisciplina] = useState('');
   const [cursoSelecionado, setCursoSelecionado] = useState('');
+  const [ativa, setAtiva] = useState(true);
   const [cursos, setCursos] = useState([]);
   const [questoes, setQuestoes] = useState([{ id: Date.now(), pergunta: '', opcoes: ['', '', '', ''], correta: '' }]);
 
@@ -84,6 +85,7 @@ const AddProvaScreen = () => {
         disciplina,
         curso: cursoSelecionado,
         questoes,
+        ativa,
         timestamp: new Date(),
       });
       alert('Prova adicionada com sucesso!');
@@ -91,6 +93,7 @@ const AddProvaScreen = () => {
       setDescricao('');
       setDisciplina('');
       setCursoSelecionado('');
+      setAtiva(true);
       setQuestoes([{ id: Date.now(), pergunta: '', opcoes: ['', '', '', ''], correta: '' }]);
     } catch (error) {
       console.error('Erro ao adicionar a prova:', error);
@@ -176,6 +179,10 @@ const AddProvaScreen = () => {
         <button type="button" onClick={handleAddQuestao} className="add-questao-button">
           + Adicionar Questão
         </button>
+        <div className="form-group">
+          <label>Prova Ativa</label>
+          <input type="checkbox" checked={ativa} onChange={() => setAtiva(!ativa)} />
+        </div>
         <button type="submit" className="submit-button">
           Salvar Prova
         </button>

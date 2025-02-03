@@ -1,116 +1,52 @@
-.alunos-notas {
-  font-family: Arial, sans-serif;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.alunos-notas h2 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.alunos-notas p {
-  font-size: 18px;
-  color: #666;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-thead {
-  background-color: #03045e;
-  color: white;
-}
-
 th, td {
-  padding: 12px;
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
 }
 
 th {
-  text-align: center;
+  background-color: #f4f4f4;
 }
 
-td {
-  text-align: center;
-  font-size: 16px;
-  color: #333;
+.status-ativa {
+  color: green;
+  font-weight: bold;
 }
 
-button {
-  background-color: #03045e;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+.status-inativa {
+  color: red;
+  font-weight: bold;
 }
 
-button:hover {
-  background-color: #0077b6;
-}
-
-.delete-button {
+.toggle-status-button {
+  margin-right: 10px;
   padding: 5px 10px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
-}
-
-.filtros {
-  display: flex;
-  gap: 40px;
-  margin-bottom: 20px;
-}
-
-.filtros label {
-  font-size: 14px;
-}
-
-.filtros select {
-  margin-left: 10px;
-  padding: 5px;
-  font-size: 14px;
-}
-
-.clear-filters {
-  
-  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  gap: 5px;
+  border-radius: 5px;
 }
 
-.clear-filters:hover {
+.toggle-status-button:hover {
   background-color: #0056b3;
 }
 
+.delete-button {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
