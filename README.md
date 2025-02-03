@@ -1,40 +1,76 @@
 # Sistema React + Firebase + Bootstrap
 
-Bem-vindo ao sistema desenvolvido com **React**, **Firebase** e **Bootstrap**. Este projeto foi criado para alunos realizar provas online e possui algumas funcionalidades, como: gerenciamento de usuários, armazenamento de provas e notas.
+Este é um sistema desenvolvido em React, integrado com Firebase e estilizado com Bootstrap. Ele foi projetado para fornecer um ambiente funcional e moderno para aplicações web.
 
-## 📋 Funcionalidades
-
-- Interface Responsiva: Desenvolvida com Bootstrap para se adaptar a diferentes dispositivos.
-- Autenticação de Usuários: Login e registro utilizando Firebase Authentication.
-- Banco de Dados em Tempo Real: Armazenamento e consulta de dados com Firebase Firestore.
-- Hospedagem na Nuvem: Firebase Hosting para servir a aplicação.
-- Componentização: Interface modular desenvolvida em React.
-
-## 🌐 Acesse o Sistema
-
-O sistema está hospedado em:  
-[https://sistema-de-avaliacao-a90c8.web.app/](https://sistema-de-avaliacao-a90c8.web.app/)
-
-Sinta-se à vontade para visitar e explorar as funcionalidades.
-
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
 - React: Biblioteca JavaScript para construção de interfaces de usuário.
-- Firebase: 
-  - Authentication (para login/registro).
-  - Firestore (para banco de dados em tempo real).
-  - Hosting (para publicação do projeto).
-  - Bootstrap: Framework CSS para criação de interfaces responsivas e elegantes.
+- Firebase: Backend como serviço, usado para autenticação, banco de dados e hospedagem.
+- Bootstrap: Framework CSS para estilização e design responsivo.
 
-## 🚀 Instalação e Configuração
+## 🌟 Funcionalidades
 
-### Pré-requisitos
+- Autenticação de usuários.
+- Integração com Firestore (banco de dados).
+- Sistema responsivo com Bootstrap.
 
-- Node.js e npm instalados.
-- Conta no Firebase.
+## 🌐 Hospedagem
 
-### Passos para Instalar
+O sistema está hospedado no Firebase Hosting e pode ser acessado por meio do seguinte link:
+[https://sistema-de-avaliacao-a90c8.web.app/](https://sistema-de-avaliacao-a90c8.web.app/)
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+## 🛠️ Configuração do Projeto
+
+Siga os passos abaixo para configurar e executar o projeto localmente.
+
+### 1. Clone o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
+
+### 2. Instale as Dependências
+
+```bash
+npm install
+```
+
+### 3. Configure o Firebase
+
+1. Acesse o [Firebase Console](https://console.firebase.google.com/).
+2. Crie um novo projeto.
+3. Vá até **Configurações do Projeto** > **Configurações Gerais** e copie as credenciais (API Key, Auth Domain, etc.).
+4. No diretório raiz do projeto, crie um arquivo `.env` com o seguinte conteúdo:
+
+```env
+REACT_APP_FIREBASE_API_KEY=coloque-sua-chave-aqui
+REACT_APP_FIREBASE_AUTH_DOMAIN=coloque-seu-dominio-aqui
+REACT_APP_FIREBASE_PROJECT_ID=coloque-seu-id-do-projeto-aqui
+REACT_APP_FIREBASE_STORAGE_BUCKET=coloque-seu-bucket-aqui
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=coloque-seu-sender-id-aqui
+REACT_APP_FIREBASE_APP_ID=coloque-seu-app-id-aqui
+```
+
+### 4. Inicie o Servidor de Desenvolvimento
+
+```bash
+npm start
+```
+
+O sistema estará disponível em `http://localhost:3000`.
+
+## 📂 Estrutura do Projeto
+
+```plaintext
+/src
+  /components  # Componentes reutilizáveis
+  /firebase.js # Configuração do Firebase
+  /App.js      # Componente principal do aplicativo
+  /index.js    # Ponto de entrada do React
+```
+
+## 📄 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
